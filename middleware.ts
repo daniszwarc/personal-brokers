@@ -20,7 +20,7 @@ async function isValid(token: string | undefined) {
   }
 }
 
-export async function proxy(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
   const sessionToken = req.cookies.get(SESSION_COOKIE)?.value
   const hasSession = await isValid(sessionToken)
