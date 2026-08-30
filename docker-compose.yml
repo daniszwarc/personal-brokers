@@ -1,9 +1,24 @@
 services:
+  personal-brokers-postgres:
+    image: postgres:17
+    container_name: personal-brokers-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: pbuser
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: personalbrokers
+    volumes:
+      - pb_postgres_data:/var/lib/postgresql/data
+    networks:
+      - n8n_default
+
   personal-brokers:
     build: .
     container_name: personal-brokers
     restart: unless-stopped
     env_file: .env
+    depends_on:
+      - personal-brokers-postgres
     networks:
       - n8n_default
     labels:
@@ -12,6 +27,9 @@ services:
       - "traefik.http.routers.personal-brokers.entrypoints=websecure"
       - "traefik.http.routers.personal-brokers.tls.certresolver=mytlschallenge"
       - "traefik.http.services.personal-brokers.loadbalancer.server.port=3002"
+
+volumes:
+  pb_postgres_data:
 
 networks:
   n8n_default:
