@@ -1,0 +1,18 @@
+services:
+  personal-brokers:
+    build: .
+    container_name: personal-brokers
+    restart: unless-stopped
+    env_file: .env
+    networks:
+      - n8n_default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.personal-brokers.rule=Host(`personalbrokers.daniszwarc.cloud`)"
+      - "traefik.http.routers.personal-brokers.entrypoints=websecure"
+      - "traefik.http.routers.personal-brokers.tls.certresolver=mytlschallenge"
+      - "traefik.http.services.personal-brokers.loadbalancer.server.port=3002"
+
+networks:
+  n8n_default:
+    external: true
