@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Topbar */}
-      <div className="bg-white border-b border-gray-100 px-6 py-3 flex items-center justify-between">
+      <div className="bg-white border-b border-gray-100 px-4 md:px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-sm">
             🛡
@@ -20,7 +20,7 @@ export default function Home() {
       </div>
 
       {/* Board */}
-      <div className="p-6">
+      <div className="p-3 md:p-6">
         <Board />
       </div>
     </main>

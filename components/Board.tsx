@@ -107,14 +107,14 @@ export default function Board() {
   return (
     <div>
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {[
           { label: 'A confirmar', val: stats.a_confirmar, sub: stats.a_confirmar > 0 ? `${stats.a_confirmar} requieren atención` : '', warn: true },
           { label: 'Pendientes',  val: stats.pendiente,   sub: stats.demoras > 0 ? `${stats.demoras} con demora` : 'Sin demoras', warn: stats.demoras > 0 },
           { label: 'En proceso',  val: stats.en_proceso,  sub: 'Sin demoras', warn: false },
           { label: 'Cerradas hoy',val: stats.cerrado,     sub: 'Promedio: 2.4 hs', warn: false },
         ].map(s => (
-          <div key={s.label} className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm">
+          <div key={s.label} className="bg-white rounded-xl border border-gray-100 p-3 md:p-4 shadow-sm">
             <div className="text-xs text-gray-500 mb-1">{s.label}</div>
             <div className="text-2xl font-semibold text-gray-800">{s.val}</div>
             {s.sub && (
@@ -127,7 +127,7 @@ export default function Board() {
       </div>
 
       {/* Board */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
         {COLUMNS.map(col => (
           <Column
             key={col.status}
