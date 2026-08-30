@@ -26,7 +26,7 @@ services:
       - "traefik.http.routers.personal-brokers.rule=Host(`personalbrokers.daniszwarc.cloud`)"
       - "traefik.http.routers.personal-brokers.entrypoints=websecure"
       - "traefik.http.routers.personal-brokers.tls.certresolver=mytlschallenge"
-      - "traefik.http.services.personal-brokers.loadbalancer.server.port=3002"
+      - "traefik.http.services.personal-brokers.loadbalancer.server.port=3000"
 
 volumes:
   pb_postgres_data:
