@@ -1,6 +1,24 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import Board from '@/components/Board'
+import NewTicketModal from '@/components/NewTicketModal'
+import { Producer } from '@/types'
 
 export default function Home() {
+  const [modalOpen, setModalOpen] = useState(false)
+  const [producers, setProducers] = useState<Producer[]>([])
+  const [boardKey, setBoardKey] = useState(0)
+
+  useEffect(() => {
+    fetch('/api/producers').then(r => r.json()).then(setProducers)
+  }, [])
+
+  const handleCreated = () => {
+    setModalOpen(false)
+    setBoardKey(k => k + 1)
+  }
+
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Topbar */}
@@ -12,15 +30,26 @@ export default function Home() {
             <div className="text-xs text-gray-400">Gestión de tareas</div>
           </div>
         </div>
-        <button className="text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors">
+        <button
+          onClick={() => setModalOpen(true)}
+          className="text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors"
+        >
           + Nueva tarea
         </button>
       </div>
 
       {/* Board */}
       <div className="p-3 md:p-6">
-        <Board />
+        <Board key={boardKey} />
       </div>
+
+      {modalOpen && (
+        <NewTicketModal
+          producers={producers}
+          onClose={() => setModalOpen(false)}
+          onCreated={handleCreated}
+        />
+      )}
     </main>
   )
 }

@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import pool from '@/lib/db'
 
 export async function GET() {
@@ -36,4 +36,40 @@ export async function GET() {
       t.updated_at ASC
   `)
   return NextResponse.json(rows)
+}
+
+export async function POST(req: NextRequest) {
+  const body = await req.json()
+  const {
+    cliente_nombre,
+    tipo,
+    poliza_ref = null,
+    poliza_aseguradora = null,
+    poliza_ramo = null,
+    assigned_to = null,
+  } = body
+
+  if (!cliente_nombre || typeof cliente_nombre !== 'string' || !cliente_nombre.trim()) {
+    return NextResponse.json({ error: 'El cliente es obligatorio.' }, { status: 400 })
+  }
+  if (!['alta', 'baja', 'a_definir'].includes(tipo)) {
+    return NextResponse.json({ error: 'El tipo es obligatorio.' }, { status: 400 })
+  }
+
+  const { rows: clientRows } = await pool.query(
+    `INSERT INTO clients (nombre) VALUES ($1)
+     ON CONFLICT (nombre) DO UPDATE SET nombre = EXCLUDED.nombre
+     RETURNING id`,
+    [cliente_nombre.trim()]
+  )
+  const clientId = clientRows[0].id
+
+  const { rows } = await pool.query(
+    `INSERT INTO tickets (client_id, assigned_to, tipo, poliza_ref, poliza_aseguradora, poliza_ramo, fuente, status)
+     VALUES ($1, $2, $3, $4, $5, $6, 'manual', 'pendiente')
+     RETURNING id, ticket_number, tipo, status, poliza_ref, poliza_aseguradora, poliza_ramo, fuente, created_at, updated_at`,
+    [clientId, assigned_to, tipo, poliza_ref, poliza_aseguradora, poliza_ramo]
+  )
+
+  return NextResponse.json(rows[0], { status: 201 })
 }
