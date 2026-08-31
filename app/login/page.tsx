@@ -38,9 +38,7 @@ export default function LoginPage() {
     <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-sm bg-white rounded-xl border border-gray-100 shadow-sm p-6">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-sm">
-            🛡
-          </div>
+          <img src="/logo.png" alt="Personal Brokers" className="h-8 w-auto" />
           <div>
             <div className="text-sm font-semibold text-gray-800">Personal Brokers</div>
             <div className="text-xs text-gray-400">Iniciar sesión</div>
