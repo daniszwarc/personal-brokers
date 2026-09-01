@@ -93,7 +93,8 @@ export default function Board() {
     pendiente:   tickets.filter(t => t.status === 'pendiente').length,
     en_proceso:  tickets.filter(t => t.status === 'en_proceso').length,
     cerrado:     tickets.filter(t => t.status === 'cerrado').length,
-    demoras:     tickets.filter(t => t.horas_sin_mover > 4 && t.status !== 'cerrado').length,
+    demorasPendiente:  tickets.filter(t => t.status === 'pendiente'  && t.horas_sin_mover > 4).length,
+    demorasEnProceso:  tickets.filter(t => t.status === 'en_proceso' && t.horas_sin_mover > 4).length,
   }
 
   if (loading) {
@@ -110,8 +111,8 @@ export default function Board() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {[
           { label: 'A confirmar', val: stats.a_confirmar, sub: stats.a_confirmar > 0 ? `${stats.a_confirmar} requieren atención` : '', warn: true },
-          { label: 'Pendientes',  val: stats.pendiente,   sub: stats.demoras > 0 ? `${stats.demoras} con demora` : 'Sin demoras', warn: stats.demoras > 0 },
-          { label: 'En proceso',  val: stats.en_proceso,  sub: 'Sin demoras', warn: false },
+          { label: 'Pendientes',  val: stats.pendiente,   sub: stats.demorasPendiente > 0 ? `${stats.demorasPendiente} con demora` : 'Sin demoras', warn: stats.demorasPendiente > 0 },
+          { label: 'En proceso',  val: stats.en_proceso,  sub: stats.demorasEnProceso > 0 ? `${stats.demorasEnProceso} con demora` : 'Sin demoras', warn: stats.demorasEnProceso > 0 },
           { label: 'Cerradas hoy',val: stats.cerrado,     sub: 'Promedio: 2.4 hs', warn: false },
         ].map(s => (
           <div key={s.label} className="bg-white rounded-xl border border-gray-100 p-3 md:p-4 shadow-sm">
