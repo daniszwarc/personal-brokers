@@ -70,7 +70,7 @@ export default function TicketCard({
       {(ticket.poliza_ramo || ticket.poliza_aseguradora || ticket.poliza_ref) && (
         <div className="text-xs text-gray-400 mb-2">
           {[ticket.poliza_ramo, ticket.poliza_aseguradora, ticket.poliza_ref]
-            .filter(Boolean).join(' · ')}
+            .filter(v => v && v !== 'null').join(' · ')}
         </div>
       )}
 
@@ -138,11 +138,22 @@ export default function TicketCard({
             </button>
           )}
         </div>
-        <span className="text-xs text-gray-400">
-          {ticket.productor_nombre
-            ? `${ticket.productor_nombre.split(' ')[0]} · hace ${Math.round(ticket.horas_sin_mover)} hs`
-            : 'Sin asignar'}
-        </span>
+        {ticket.productor_id ? (
+          <span className="text-xs text-gray-400">
+            {ticket.productor_nombre.split(' ')[0]} · hace {Math.round(ticket.horas_sin_mover)} hs
+          </span>
+        ) : (
+          <select
+            className="text-xs border border-gray-200 rounded px-1 py-0.5 bg-white text-gray-500"
+            defaultValue=""
+            onChange={e => e.target.value && onAssign(ticket.id, e.target.value)}
+          >
+            <option value="" disabled>Asignar...</option>
+            {producers.map(p => (
+              <option key={p.id} value={p.id}>{p.name}</option>
+            ))}
+          </select>
+        )}
       </div>
     </div>
   )
