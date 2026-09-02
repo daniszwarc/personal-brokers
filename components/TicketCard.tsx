@@ -48,10 +48,6 @@ export default function TicketCard({
         hover:border-gray-300 transition-colors
       `}
     >
-      {ticket.has_new_message && (
-        <div className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full" />
-      )}
-
       {/* Header */}
       <div className="flex items-center justify-between mb-1">
         <span className="text-xs font-mono text-gray-500">{ticket.ticket_number}</span>

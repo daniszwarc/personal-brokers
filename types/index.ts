@@ -10,7 +10,6 @@ export interface Ticket {
   poliza_ref: string | null
   poliza_aseguradora: string | null
   poliza_ramo: string | null
-  has_new_message: boolean
   resumen: string | null
   visible: boolean
   fuente: TicketFuente
