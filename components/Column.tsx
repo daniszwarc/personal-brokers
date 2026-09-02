@@ -18,10 +18,10 @@ interface Props {
 }
 
 const COL_STYLE: Record<TicketStatus, string> = {
-  a_confirmar: 'bg-amber-50',
+  a_confirmar: 'bg-gray-50',
   pendiente:   'bg-gray-50',
-  en_proceso:  'bg-blue-50',
-  cerrado:     'bg-green-50',
+  en_proceso:  'bg-gray-50',
+  cerrado:     'bg-gray-50',
 }
 
 const DOT_STYLE: Record<TicketStatus, string> = {
