@@ -18,10 +18,17 @@ interface Props {
 }
 
 const DOT_STYLE: Record<TicketStatus, string> = {
-  a_confirmar: 'bg-amber-400',
-  pendiente:   'bg-gray-400',
+  a_confirmar: 'bg-yellow-400',
+  pendiente:   'bg-green-500',
   en_proceso:  'bg-blue-500',
-  cerrado:     'bg-green-500',
+  cerrado:     'bg-gray-400',
+}
+
+const COLUMN_COLOR: Record<TicketStatus, 'yellow' | 'green' | 'blue' | 'gray'> = {
+  a_confirmar: 'yellow',
+  pendiente:   'green',
+  en_proceso:  'blue',
+  cerrado:     'gray',
 }
 
 export default function Column({
@@ -41,8 +48,8 @@ export default function Column({
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <div className={`w-2 h-2 rounded-full ${DOT_STYLE[status]}`} />
-          <span className="text-sm font-semibold text-gray-800">{label}</span>
+          <div className={`w-3 h-3 rounded-full ${DOT_STYLE[status]}`} />
+          <span className="text-lg font-bold text-gray-800">{label}</span>
         </div>
         <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-200 text-gray-600">
           {tickets.length}
@@ -65,6 +72,7 @@ export default function Column({
               onConfirm={onConfirm}
               onArchive={onArchive}
               isDragging={draggedId === t.id}
+              columnColor={COLUMN_COLOR[status]}
             />
           </div>
         ))}

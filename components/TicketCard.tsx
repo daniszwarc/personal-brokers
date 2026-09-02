@@ -10,6 +10,14 @@ interface Props {
   onConfirm: (id: string, accion: 'nueva' | 'fusionar') => void
   onArchive: (id: string) => void
   isDragging?: boolean
+  columnColor: 'yellow' | 'green' | 'blue' | 'gray'
+}
+
+const BORDER_STYLE: Record<Props['columnColor'], string> = {
+  yellow: 'border-l-4 border-l-yellow-400',
+  green:  'border-l-4 border-l-green-500',
+  blue:   'border-l-4 border-l-blue-500',
+  gray:   'border-l-4 border-l-gray-400',
 }
 
 const FUENTE_LABEL: Record<string, string> = {
@@ -25,7 +33,7 @@ const TIPO_LABEL: Record<string, string> = {
 }
 
 export default function TicketCard({
-  ticket, producers, onStatusChange, onAssign, onConfirm, onArchive, isDragging
+  ticket, producers, onStatusChange, onAssign, onConfirm, onArchive, isDragging, columnColor
 }: Props) {
   const demora = ticket.horas_sin_mover > 4 && ticket.status !== 'cerrado'
   const sinAsignar = !ticket.productor_id
@@ -35,6 +43,7 @@ export default function TicketCard({
       draggable={ticket.status !== 'a_confirmar'}
       className={`
         relative bg-white rounded-md border border-gray-200 shadow-sm p-3 mb-2 cursor-grab select-none
+        ${BORDER_STYLE[columnColor]}
         ${isDragging ? 'opacity-40' : ''}
         hover:border-gray-300 transition-colors
       `}
@@ -46,13 +55,11 @@ export default function TicketCard({
       {/* Header */}
       <div className="flex items-center justify-between mb-1">
         <span className="text-xs font-mono text-gray-500">{ticket.ticket_number}</span>
+        {ticket.resumen && (
+          <span className="text-xs text-gray-700 font-medium truncate flex-1 mx-2">{ticket.resumen}</span>
+        )}
         <span className="text-xs text-gray-400">{TIPO_LABEL[ticket.tipo]}</span>
       </div>
-
-      {/* Resumen */}
-      {ticket.resumen && (
-        <div className="text-xs text-gray-700 font-medium mb-1 truncate">{ticket.resumen}</div>
-      )}
 
       {/* Cliente */}
       <div className="text-sm font-semibold text-gray-900 mb-0.5">
@@ -130,7 +137,7 @@ export default function TicketCard({
         ) : (
           <span />
         )}
-        <span className="text-xs text-gray-400">{FUENTE_LABEL[ticket.fuente]}</span>
+        <span className="text-xs text-gray-400">Origen: {FUENTE_LABEL[ticket.fuente]}</span>
         <span className="text-xs text-gray-400">
           {ticket.productor_nombre
             ? `${ticket.productor_nombre.split(' ')[0]} · hace ${Math.round(ticket.horas_sin_mover)} hs`
