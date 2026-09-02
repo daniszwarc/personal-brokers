@@ -8,6 +8,7 @@ interface Props {
   onStatusChange: (id: string, status: string) => void
   onAssign: (id: string, producerId: string) => void
   onConfirm: (id: string, accion: 'nueva' | 'fusionar') => void
+  onArchive: (id: string) => void
   isDragging?: boolean
 }
 
@@ -24,7 +25,7 @@ const TIPO_LABEL: Record<string, string> = {
 }
 
 export default function TicketCard({
-  ticket, producers, onStatusChange, onAssign, onConfirm, isDragging
+  ticket, producers, onStatusChange, onAssign, onConfirm, onArchive, isDragging
 }: Props) {
   const demora = ticket.horas_sin_mover > 4 && ticket.status !== 'cerrado'
   const sinAsignar = !ticket.productor_id
@@ -33,7 +34,7 @@ export default function TicketCard({
     <div
       draggable={ticket.status !== 'a_confirmar'}
       className={`
-        relative bg-white rounded-xl border border-gray-200 p-3 mb-2 cursor-grab select-none
+        relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-blue-500 p-3 mb-2 cursor-grab select-none
         ${isDragging ? 'opacity-40' : ''}
         hover:border-gray-300 transition-colors
       `}
@@ -47,6 +48,11 @@ export default function TicketCard({
         <span className="text-xs font-mono font-bold text-gray-700">{ticket.ticket_number}</span>
         <span className="text-xs text-gray-500">{TIPO_LABEL[ticket.tipo]}</span>
       </div>
+
+      {/* Resumen */}
+      {ticket.resumen && (
+        <div className="text-xs text-gray-500 mb-1 truncate">{ticket.resumen}</div>
+      )}
 
       {/* Cliente */}
       <div className="text-sm font-semibold text-gray-900 mb-0.5">
@@ -114,6 +120,12 @@ export default function TicketCard({
 
       {/* Footer */}
       <div className="flex items-center justify-between mt-2">
+        <button
+          onClick={() => onArchive(ticket.id)}
+          className="text-xs text-gray-400 hover:text-red-400 transition-colors"
+        >
+          Archivar
+        </button>
         <span className="text-xs text-gray-400">{FUENTE_LABEL[ticket.fuente]}</span>
         <span className="text-xs text-gray-400">
           {ticket.productor_nombre

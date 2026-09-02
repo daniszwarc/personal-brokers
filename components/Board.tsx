@@ -79,6 +79,17 @@ export default function Board() {
     }
   }
 
+  const handleArchive = async (id: string) => {
+    const ticket = tickets.find(t => t.id === id)
+    setTickets(prev => prev.filter(t => t.id !== id))
+    await fetch(`/api/tickets/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ visible: false }),
+    })
+    showToast(`${ticket?.ticket_number} archivado`)
+  }
+
   const handleDrop = async (targetStatus: TicketStatus) => {
     if (!draggedId) return
     const ticket = tickets.find(t => t.id === draggedId)
@@ -142,6 +153,7 @@ export default function Board() {
             onStatusChange={handleStatusChange}
             onAssign={handleAssign}
             onConfirm={handleConfirm}
+            onArchive={handleArchive}
           />
         ))}
       </div>

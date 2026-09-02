@@ -6,7 +6,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const body = await req.json()
-  const { status, assigned_to, accion } = body
+  const { status, assigned_to, accion, visible } = body
   const { id } = await params
 
   // Resolver "a_confirmar": fusionar con ticket existente
@@ -41,6 +41,11 @@ export async function PATCH(
   if (assigned_to !== undefined) {
     updates.push(`assigned_to = $${i++}`)
     values.push(assigned_to)
+  }
+
+  if (visible === false) {
+    updates.push(`visible = $${i++}`)
+    values.push('false')
   }
 
   if (updates.length === 0) {

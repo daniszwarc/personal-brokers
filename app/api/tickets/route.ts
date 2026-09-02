@@ -12,6 +12,8 @@ export async function GET() {
       t.poliza_aseguradora,
       t.poliza_ramo,
       t.has_new_message,
+      t.resumen,
+      t.visible,
       t.fuente,
       t.ref_ticket_id,
       t.created_at,
@@ -25,8 +27,9 @@ export async function GET() {
     LEFT JOIN clients  c  ON t.client_id  = c.id
     LEFT JOIN producers p ON t.assigned_to = p.id
     LEFT JOIN tickets  rt ON t.ref_ticket_id = rt.id
-    WHERE t.status != 'cerrado'
-       OR t.closed_at > NOW() - INTERVAL '24 hours'
+    WHERE t.visible = true
+      AND (t.status != 'cerrado'
+       OR t.closed_at > NOW() - INTERVAL '24 hours')
     ORDER BY
       CASE t.status
         WHEN 'a_confirmar' THEN 1

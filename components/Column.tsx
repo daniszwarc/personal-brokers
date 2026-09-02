@@ -14,6 +14,7 @@ interface Props {
   onStatusChange: (id: string, status: string) => void
   onAssign: (id: string, producerId: string) => void
   onConfirm: (id: string, accion: 'nueva' | 'fusionar') => void
+  onArchive: (id: string) => void
 }
 
 const COL_STYLE: Record<TicketStatus, string> = {
@@ -39,7 +40,7 @@ const BADGE_STYLE: Record<TicketStatus, string> = {
 
 export default function Column({
   status, label, tickets, producers, draggedId,
-  onDragStart, onDrop, onStatusChange, onAssign, onConfirm
+  onDragStart, onDrop, onStatusChange, onAssign, onConfirm, onArchive
 }: Props) {
   return (
     <div
@@ -76,6 +77,7 @@ export default function Column({
               onStatusChange={onStatusChange}
               onAssign={onAssign}
               onConfirm={onConfirm}
+              onArchive={onArchive}
               isDragging={draggedId === t.id}
             />
           </div>
