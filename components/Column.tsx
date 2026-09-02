@@ -17,25 +17,11 @@ interface Props {
   onArchive: (id: string) => void
 }
 
-const COL_STYLE: Record<TicketStatus, string> = {
-  a_confirmar: 'bg-gray-50',
-  pendiente:   'bg-gray-50',
-  en_proceso:  'bg-gray-50',
-  cerrado:     'bg-gray-50',
-}
-
 const DOT_STYLE: Record<TicketStatus, string> = {
   a_confirmar: 'bg-amber-400',
   pendiente:   'bg-gray-400',
   en_proceso:  'bg-blue-500',
   cerrado:     'bg-green-500',
-}
-
-const BADGE_STYLE: Record<TicketStatus, string> = {
-  a_confirmar: 'bg-amber-400 text-white',
-  pendiente:   'bg-gray-300 text-gray-700',
-  en_proceso:  'bg-blue-100 text-blue-700',
-  cerrado:     'bg-green-100 text-green-700',
 }
 
 export default function Column({
@@ -44,7 +30,7 @@ export default function Column({
 }: Props) {
   return (
     <div
-      className={`rounded-xl p-3 min-h-64 border-r border-white ${COL_STYLE[status]}`}
+      className="bg-white rounded-lg shadow-sm p-3 min-h-64"
       onDragOver={e => {
         if (status !== 'a_confirmar') e.preventDefault()
       }}
@@ -56,9 +42,9 @@ export default function Column({
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className={`w-2 h-2 rounded-full ${DOT_STYLE[status]}`} />
-          <span className="text-base font-semibold text-gray-700">{label}</span>
+          <span className="text-sm font-semibold text-gray-800">{label}</span>
         </div>
-        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${BADGE_STYLE[status]}`}>
+        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-200 text-gray-600">
           {tickets.length}
         </span>
       </div>

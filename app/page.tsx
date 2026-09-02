@@ -20,7 +20,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-gray-100">
       {/* Topbar */}
       <div className="bg-white border-b border-gray-100 px-4 md:px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">

@@ -34,7 +34,7 @@ export default function TicketCard({
     <div
       draggable={ticket.status !== 'a_confirmar'}
       className={`
-        relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-blue-500 p-3 mb-2 cursor-grab select-none
+        relative bg-white rounded-md border border-gray-200 shadow-sm p-3 mb-2 cursor-grab select-none
         ${isDragging ? 'opacity-40' : ''}
         hover:border-gray-300 transition-colors
       `}
@@ -45,13 +45,13 @@ export default function TicketCard({
 
       {/* Header */}
       <div className="flex items-center justify-between mb-1">
-        <span className="text-xs font-mono font-bold text-gray-700">{ticket.ticket_number}</span>
-        <span className="text-xs text-gray-500">{TIPO_LABEL[ticket.tipo]}</span>
+        <span className="text-xs font-mono text-gray-500">{ticket.ticket_number}</span>
+        <span className="text-xs text-gray-400">{TIPO_LABEL[ticket.tipo]}</span>
       </div>
 
       {/* Resumen */}
       {ticket.resumen && (
-        <div className="text-xs text-gray-500 mb-1 truncate">{ticket.resumen}</div>
+        <div className="text-xs text-gray-700 font-medium mb-1 truncate">{ticket.resumen}</div>
       )}
 
       {/* Cliente */}
