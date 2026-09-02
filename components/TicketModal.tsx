@@ -115,12 +115,20 @@ export default function TicketModal({
             <option value="en_proceso">En proceso</option>
             <option value="cerrado">Cerrado</option>
           </select>
-          <button
-            onClick={() => { onStatusChange(ticket.id, 'cerrado'); onArchive(ticket.id) }}
-            className="text-xs bg-gray-800 text-white px-3 py-1.5 rounded-lg hover:bg-gray-900 transition-colors"
-          >
-            Cerrar y archivar
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => { onStatusChange(ticket.id, 'cerrado'); onClose() }}
+              className="border border-gray-300 text-gray-700 rounded px-4 py-2 hover:bg-gray-50 text-sm transition-colors"
+            >
+              Cerrar
+            </button>
+            <button
+              onClick={() => { onStatusChange(ticket.id, 'cerrado'); onArchive(ticket.id); onClose() }}
+              className="bg-gray-800 text-white rounded px-4 py-2 hover:bg-gray-900 text-sm transition-colors"
+            >
+              Cerrar y archivar
+            </button>
+          </div>
         </div>
       </div>
     </div>
