@@ -9,6 +9,7 @@ interface Props {
   onAssign: (id: string, producerId: string) => void
   onConfirm: (id: string, accion: 'nueva' | 'fusionar') => void
   onArchive: (id: string) => void
+  onOpen: (id: string) => void
   isDragging?: boolean
   columnColor: 'yellow' | 'green' | 'blue' | 'gray'
 }
@@ -33,7 +34,7 @@ const TIPO_LABEL: Record<string, string> = {
 }
 
 export default function TicketCard({
-  ticket, producers, onStatusChange, onAssign, onConfirm, onArchive, isDragging, columnColor
+  ticket, producers, onStatusChange, onAssign, onConfirm, onArchive, onOpen, isDragging, columnColor
 }: Props) {
   const demora = ticket.horas_sin_mover > 4 && ticket.status !== 'cerrado'
   const sinAsignar = !ticket.productor_id
@@ -41,6 +42,7 @@ export default function TicketCard({
   return (
     <div
       draggable={ticket.status !== 'a_confirmar'}
+      onClick={() => onOpen(ticket.id)}
       className={`
         relative bg-white rounded-md border border-gray-200 shadow-sm p-3 mb-2 cursor-grab select-none
         ${BORDER_STYLE[columnColor]}
@@ -82,6 +84,7 @@ export default function TicketCard({
           <select
             className="w-full text-xs border border-gray-200 rounded px-2 py-1 mb-1.5 bg-white"
             defaultValue=""
+            onClick={e => e.stopPropagation()}
             onChange={e => e.target.value && onAssign(ticket.id, e.target.value)}
           >
             <option value="" disabled>Asignar a...</option>
@@ -90,7 +93,7 @@ export default function TicketCard({
             ))}
           </select>
           <button
-            onClick={() => onStatusChange(ticket.id, 'cerrado')}
+            onClick={e => { e.stopPropagation(); onStatusChange(ticket.id, 'cerrado') }}
             className="w-full text-xs text-gray-500 hover:text-red-500 transition-colors"
           >
             Descartar
@@ -106,13 +109,13 @@ export default function TicketCard({
           </p>
           <div className="flex gap-1.5">
             <button
-              onClick={() => onConfirm(ticket.id, 'nueva')}
+              onClick={e => { e.stopPropagation(); onConfirm(ticket.id, 'nueva') }}
               className="flex-1 text-xs bg-blue-600 text-white rounded px-2 py-1 hover:bg-blue-700 transition-colors"
             >
               Tarea nueva
             </button>
             <button
-              onClick={() => onConfirm(ticket.id, 'fusionar')}
+              onClick={e => { e.stopPropagation(); onConfirm(ticket.id, 'fusionar') }}
               className="flex-1 text-xs border border-gray-300 rounded px-2 py-1 hover:bg-gray-50 transition-colors"
             >
               Actualizar {ticket.ref_ticket_number}
@@ -127,7 +130,7 @@ export default function TicketCard({
           <span className="text-xs text-gray-400">Origen: {FUENTE_LABEL[ticket.fuente]}</span>
           {ticket.status === 'cerrado' && (
             <button
-              onClick={() => onArchive(ticket.id)}
+              onClick={e => { e.stopPropagation(); onArchive(ticket.id) }}
               className="text-xs text-gray-400 hover:text-red-400 transition-colors"
             >
               Archivar
@@ -142,6 +145,7 @@ export default function TicketCard({
           <select
             className="text-xs border border-gray-200 rounded px-1 py-0.5 bg-white text-gray-500"
             defaultValue=""
+            onClick={e => e.stopPropagation()}
             onChange={e => e.target.value && onAssign(ticket.id, e.target.value)}
           >
             <option value="" disabled>Asignar...</option>

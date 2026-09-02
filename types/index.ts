@@ -18,6 +18,8 @@ export interface Ticket {
   cliente_nombre: string | null
   productor_nombre: string | null
   productor_id: string | null
+  mensaje_contenido: string | null
+  mensaje_fecha: string | null
   horas_sin_mover: number
   created_at: string
   updated_at: string

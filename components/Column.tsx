@@ -15,6 +15,7 @@ interface Props {
   onAssign: (id: string, producerId: string) => void
   onConfirm: (id: string, accion: 'nueva' | 'fusionar') => void
   onArchive: (id: string) => void
+  onOpen: (id: string) => void
 }
 
 const DOT_STYLE: Record<TicketStatus, string> = {
@@ -33,7 +34,7 @@ const COLUMN_COLOR: Record<TicketStatus, 'yellow' | 'green' | 'blue' | 'gray'> =
 
 export default function Column({
   status, label, tickets, producers, draggedId,
-  onDragStart, onDrop, onStatusChange, onAssign, onConfirm, onArchive
+  onDragStart, onDrop, onStatusChange, onAssign, onConfirm, onArchive, onOpen
 }: Props) {
   return (
     <div
@@ -71,6 +72,7 @@ export default function Column({
               onAssign={onAssign}
               onConfirm={onConfirm}
               onArchive={onArchive}
+              onOpen={onOpen}
               isDragging={draggedId === t.id}
               columnColor={COLUMN_COLOR[status]}
             />

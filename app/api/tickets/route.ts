@@ -21,11 +21,20 @@ export async function GET() {
       p.name   AS productor_nombre,
       p.id     AS productor_id,
       rt.ticket_number AS ref_ticket_number,
+      m.contenido AS mensaje_contenido,
+      m.mensaje_fecha,
       EXTRACT(EPOCH FROM (NOW() - t.updated_at))/3600 AS horas_sin_mover
     FROM tickets t
     LEFT JOIN clients  c  ON t.client_id  = c.id
     LEFT JOIN producers p ON t.assigned_to = p.id
     LEFT JOIN tickets  rt ON t.ref_ticket_id = rt.id
+    LEFT JOIN LATERAL (
+      SELECT contenido, created_at as mensaje_fecha
+      FROM messages
+      WHERE ticket_id = t.id
+      ORDER BY created_at DESC
+      LIMIT 1
+    ) m ON true
     WHERE t.visible = true
       AND (t.status != 'cerrado'
        OR t.closed_at > NOW() - INTERVAL '24 hours')

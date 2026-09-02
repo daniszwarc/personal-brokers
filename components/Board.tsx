@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Ticket, Producer, TicketStatus } from '@/types'
 import Column from './Column'
+import TicketModal from './TicketModal'
 
 const COLUMNS: { status: TicketStatus; label: string }[] = [
   { status: 'a_confirmar', label: 'A confirmar' },
@@ -17,6 +18,7 @@ export default function Board() {
   const [draggedId, setDraggedId] = useState<string | null>(null)
   const [loading, setLoading]     = useState(true)
   const [toast, setToast]         = useState<string | null>(null)
+  const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null)
 
   const showToast = (msg: string) => {
     setToast(msg)
@@ -125,6 +127,7 @@ export default function Board() {
             onAssign={handleAssign}
             onConfirm={handleConfirm}
             onArchive={handleArchive}
+            onOpen={setSelectedTicketId}
           />
         ))}
       </div>
@@ -135,6 +138,22 @@ export default function Board() {
           ✓ {toast}
         </div>
       )}
+
+      {/* Modal */}
+      {selectedTicketId && (() => {
+        const selectedTicket = tickets.find(t => t.id === selectedTicketId)
+        if (!selectedTicket) return null
+        return (
+          <TicketModal
+            ticket={selectedTicket}
+            producers={producers}
+            onClose={() => setSelectedTicketId(null)}
+            onStatusChange={handleStatusChange}
+            onAssign={handleAssign}
+            onArchive={handleArchive}
+          />
+        )
+      })()}
     </div>
   )
 }
