@@ -39,12 +39,16 @@ export default function TicketCard({
     <div
       draggable={ticket.status !== 'a_confirmar'}
       className={`
-        bg-white rounded-xl border p-3 mb-2 cursor-grab select-none
+        relative bg-white rounded-xl border p-3 mb-2 cursor-grab select-none
         ${demora ? 'border-l-2 border-l-red-400 border-r border-t border-b border-gray-200' : 'border-gray-200'}
         ${isDragging ? 'opacity-40' : ''}
         hover:border-gray-300 transition-colors
       `}
     >
+      {ticket.has_new_message && (
+        <div className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full" />
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between mb-1">
         <span className="text-xs font-mono text-gray-400">{ticket.ticket_number}</span>

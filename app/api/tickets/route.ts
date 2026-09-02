@@ -11,6 +11,7 @@ export async function GET() {
       t.poliza_ref,
       t.poliza_aseguradora,
       t.poliza_ramo,
+      t.has_new_message,
       t.fuente,
       t.ref_ticket_id,
       t.created_at,
@@ -33,7 +34,8 @@ export async function GET() {
         WHEN 'en_proceso'  THEN 3
         WHEN 'cerrado'     THEN 4
       END,
-      t.updated_at ASC
+      t.has_new_message DESC,
+      t.updated_at DESC
   `)
   return NextResponse.json(rows)
 }
