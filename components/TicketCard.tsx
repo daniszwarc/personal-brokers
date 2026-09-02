@@ -140,7 +140,7 @@ export default function TicketCard({
         </div>
         {ticket.productor_id ? (
           <span className="text-xs text-gray-400">
-            {ticket.productor_nombre.split(' ')[0]} · hace {Math.round(ticket.horas_sin_mover)} hs
+            {ticket.productor_nombre?.split(' ')[0]} · hace {Math.round(ticket.horas_sin_mover)} hs
           </span>
         ) : (
           <select
