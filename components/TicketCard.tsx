@@ -17,12 +17,6 @@ const FUENTE_LABEL: Record<string, string> = {
   mail: '✉️ Mail',
 }
 
-const TIPO_STYLE: Record<string, string> = {
-  alta:     'bg-green-100 text-green-700',
-  baja:     'bg-red-100 text-red-700',
-  a_definir:'bg-yellow-100 text-yellow-700',
-}
-
 const TIPO_LABEL: Record<string, string> = {
   alta: 'Alta',
   baja: 'Baja',
@@ -39,40 +33,37 @@ export default function TicketCard({
     <div
       draggable={ticket.status !== 'a_confirmar'}
       className={`
-        relative bg-white rounded-xl border p-3 mb-2 cursor-grab select-none
-        ${demora ? 'border-l-2 border-l-red-400 border-r border-t border-b border-gray-200' : 'border-gray-200'}
+        relative bg-white rounded-xl border border-gray-200 p-3 mb-2 cursor-grab select-none
         ${isDragging ? 'opacity-40' : ''}
         hover:border-gray-300 transition-colors
       `}
     >
       {ticket.has_new_message && (
-        <div className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full" />
+        <div className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full" />
       )}
 
       {/* Header */}
       <div className="flex items-center justify-between mb-1">
-        <span className="text-xs font-mono text-gray-400">{ticket.ticket_number}</span>
-        <span className="text-xs text-gray-400">{FUENTE_LABEL[ticket.fuente]}</span>
-      </div>
-
-      {/* Tipo */}
-      <div className="mb-2">
-        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${TIPO_STYLE[ticket.tipo]}`}>
-          {TIPO_LABEL[ticket.tipo]}
-        </span>
+        <span className="text-xs font-mono font-bold text-gray-700">{ticket.ticket_number}</span>
+        <span className="text-xs text-gray-500">{TIPO_LABEL[ticket.tipo]}</span>
       </div>
 
       {/* Cliente */}
-      <div className="text-sm font-medium text-gray-800 mb-0.5">
+      <div className="text-sm font-semibold text-gray-900 mb-0.5">
         {ticket.cliente_nombre ?? 'Cliente desconocido'}
       </div>
 
       {/* Póliza */}
       {(ticket.poliza_ramo || ticket.poliza_aseguradora || ticket.poliza_ref) && (
-        <div className="text-xs text-gray-500 mb-2">
+        <div className="text-xs text-gray-400 mb-2">
           {[ticket.poliza_ramo, ticket.poliza_aseguradora, ticket.poliza_ref]
             .filter(Boolean).join(' · ')}
         </div>
+      )}
+
+      {/* Demora */}
+      {demora && (
+        <div className="text-xs text-red-500 mb-2">⚠ con demora</div>
       )}
 
       {/* Banner A confirmar — sin productor */}
@@ -123,27 +114,12 @@ export default function TicketCard({
 
       {/* Footer */}
       <div className="flex items-center justify-between mt-2">
-        <div className="flex items-center gap-1.5">
-          {ticket.productor_nombre ? (
-            <>
-              <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-[9px] font-medium">
-                {ticket.productor_nombre.split(' ').map(n => n[0]).join('').slice(0, 2)}
-              </div>
-              <span className="text-xs text-gray-500">
-                {ticket.productor_nombre.split(' ')[0]}
-              </span>
-            </>
-          ) : (
-            <span className="text-xs text-gray-400">Sin asignar</span>
-          )}
-        </div>
-        <div className="flex items-center gap-1 text-xs text-gray-400">
-          {ticket.status === 'cerrado' ? '✓' : '⏱'}
-          {demora
-            ? <span className="text-red-500">hace {Math.round(ticket.horas_sin_mover)} hs</span>
-            : <span>hace {Math.round(ticket.horas_sin_mover)} hs</span>
-          }
-        </div>
+        <span className="text-xs text-gray-400">{FUENTE_LABEL[ticket.fuente]}</span>
+        <span className="text-xs text-gray-400">
+          {ticket.productor_nombre
+            ? `${ticket.productor_nombre.split(' ')[0]} · hace ${Math.round(ticket.horas_sin_mover)} hs`
+            : 'Sin asignar'}
+        </span>
       </div>
     </div>
   )
