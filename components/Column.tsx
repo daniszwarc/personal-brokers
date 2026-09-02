@@ -44,7 +44,7 @@ export default function Column({
 }: Props) {
   return (
     <div
-      className={`rounded-xl p-3 min-h-64 ${COL_STYLE[status]}`}
+      className={`rounded-xl p-3 min-h-64 border-r border-white ${COL_STYLE[status]}`}
       onDragOver={e => {
         if (status !== 'a_confirmar') e.preventDefault()
       }}
@@ -56,7 +56,7 @@ export default function Column({
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className={`w-2 h-2 rounded-full ${DOT_STYLE[status]}`} />
-          <span className="text-sm font-medium text-gray-700">{label}</span>
+          <span className="text-base font-semibold text-gray-700">{label}</span>
         </div>
         <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${BADGE_STYLE[status]}`}>
           {tickets.length}

@@ -120,12 +120,16 @@ export default function TicketCard({
 
       {/* Footer */}
       <div className="flex items-center justify-between mt-2">
-        <button
-          onClick={() => onArchive(ticket.id)}
-          className="text-xs text-gray-400 hover:text-red-400 transition-colors"
-        >
-          Archivar
-        </button>
+        {ticket.status === 'cerrado' ? (
+          <button
+            onClick={() => onArchive(ticket.id)}
+            className="text-xs text-gray-400 hover:text-red-400 transition-colors"
+          >
+            Archivar
+          </button>
+        ) : (
+          <span />
+        )}
         <span className="text-xs text-gray-400">{FUENTE_LABEL[ticket.fuente]}</span>
         <span className="text-xs text-gray-400">
           {ticket.productor_nombre
