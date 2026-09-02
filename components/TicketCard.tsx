@@ -126,18 +126,18 @@ export default function TicketCard({
       )}
 
       {/* Footer */}
-      <div className="flex items-center justify-between mt-2">
-        {ticket.status === 'cerrado' ? (
-          <button
-            onClick={() => onArchive(ticket.id)}
-            className="text-xs text-gray-400 hover:text-red-400 transition-colors"
-          >
-            Archivar
-          </button>
-        ) : (
-          <span />
-        )}
-        <span className="text-xs text-gray-400">Origen: {FUENTE_LABEL[ticket.fuente]}</span>
+      <div className="flex justify-between items-center mt-2">
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-gray-400">Origen: {FUENTE_LABEL[ticket.fuente]}</span>
+          {ticket.status === 'cerrado' && (
+            <button
+              onClick={() => onArchive(ticket.id)}
+              className="text-xs text-gray-400 hover:text-red-400 transition-colors"
+            >
+              Archivar
+            </button>
+          )}
+        </div>
         <span className="text-xs text-gray-400">
           {ticket.productor_nombre
             ? `${ticket.productor_nombre.split(' ')[0]} · hace ${Math.round(ticket.horas_sin_mover)} hs`
