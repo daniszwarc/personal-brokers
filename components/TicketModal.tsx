@@ -99,7 +99,7 @@ export default function TicketModal({
         {/* Mensaje */}
         <div className="mb-4">
           <div className="text-xs text-gray-400 mb-1">Mensaje</div>
-          <div className="text-sm text-gray-700 bg-gray-50 rounded p-3">
+          <div className="text-sm text-gray-700 bg-gray-50 rounded p-3 max-h-48 overflow-y-auto">
             {ticket.mensaje_contenido ?? 'Sin contenido'}
           </div>
         </div>
