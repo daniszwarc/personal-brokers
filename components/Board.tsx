@@ -92,6 +92,13 @@ export default function Board() {
     showToast(`${ticket?.ticket_number} archivado`)
   }
 
+  const handleDelete = async (id: string) => {
+    const ticket = tickets.find(t => t.id === id)
+    setTickets(prev => prev.filter(t => t.id !== id))
+    await fetch(`/api/tickets/${id}`, { method: 'DELETE' })
+    showToast(`${ticket?.ticket_number} eliminado`)
+  }
+
   const handleDrop = async (targetStatus: TicketStatus) => {
     if (!draggedId) return
     const ticket = tickets.find(t => t.id === draggedId)
@@ -150,7 +157,7 @@ export default function Board() {
             onClose={() => setSelectedTicketId(null)}
             onStatusChange={handleStatusChange}
             onAssign={handleAssign}
-            onArchive={handleArchive}
+            onDelete={handleDelete}
           />
         )
       })()}

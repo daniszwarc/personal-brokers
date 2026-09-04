@@ -8,7 +8,7 @@ interface Props {
   onClose: () => void
   onStatusChange: (id: string, status: string) => void
   onAssign: (id: string, producerId: string) => void
-  onArchive: (id: string) => void
+  onDelete: (id: string) => void
 }
 
 const FUENTE_LABEL: Record<string, string> = {
@@ -30,7 +30,7 @@ function formatFecha(iso: string) {
 }
 
 export default function TicketModal({
-  ticket, producers, onClose, onStatusChange, onAssign, onArchive
+  ticket, producers, onClose, onStatusChange, onAssign, onDelete
 }: Props) {
   const poliza = [ticket.poliza_ramo, ticket.poliza_aseguradora, ticket.poliza_ref]
     .filter(v => v && v !== 'null').join(' · ')
@@ -123,10 +123,14 @@ export default function TicketModal({
               Cerrar
             </button>
             <button
-              onClick={() => { onStatusChange(ticket.id, 'cerrado'); onArchive(ticket.id); onClose() }}
+              onClick={() => {
+                if (!confirm('¿Eliminar este ticket de forma permanente?')) return
+                onDelete(ticket.id)
+                onClose()
+              }}
               className="bg-gray-800 text-white rounded px-4 py-2 hover:bg-gray-900 text-sm transition-colors"
             >
-              Cerrar y archivar
+              Cerrar y eliminar
             </button>
           </div>
         </div>
