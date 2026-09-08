@@ -19,6 +19,8 @@ export default function Board() {
   const [loading, setLoading]     = useState(true)
   const [toast, setToast]         = useState<string | null>(null)
   const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null)
+  const [currentProducerId, setCurrentProducerId] = useState<string | null>(null)
+  const [filter, setFilter] = useState<'todos' | 'mios'>('todos')
 
   const showToast = (msg: string) => {
     setToast(msg)
@@ -35,10 +37,17 @@ export default function Board() {
   useEffect(() => {
     fetchTickets()
     fetch('/api/producers').then(r => r.json()).then(setProducers)
+    fetch('/api/auth/me').then(r => r.ok ? r.json() : null).then(data => {
+      if (data) setCurrentProducerId(data.producerId)
+    })
     // Refresco cada 30 segundos
     const interval = setInterval(fetchTickets, 30_000)
     return () => clearInterval(interval)
   }, [fetchTickets])
+
+  const visibleTickets = filter === 'mios' && currentProducerId
+    ? tickets.filter(t => t.productor_id === currentProducerId || t.productor_id == null)
+    : tickets
 
   const handleStatusChange = async (id: string, status: string) => {
     const ticket = tickets.find(t => t.id === id)
@@ -118,6 +127,26 @@ export default function Board() {
 
   return (
     <div>
+      {/* Filtro */}
+      <div className="flex gap-1 mb-3 bg-white border border-gray-200 rounded-lg p-1 w-fit">
+        <button
+          onClick={() => setFilter('todos')}
+          className={`text-xs px-3 py-1.5 rounded-md transition-colors ${
+            filter === 'todos' ? 'bg-blue-600 text-white' : 'text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          Todos
+        </button>
+        <button
+          onClick={() => setFilter('mios')}
+          className={`text-xs px-3 py-1.5 rounded-md transition-colors ${
+            filter === 'mios' ? 'bg-blue-600 text-white' : 'text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          Mis tickets
+        </button>
+      </div>
+
       {/* Board */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
         {COLUMNS.map(col => (
@@ -125,7 +154,7 @@ export default function Board() {
             key={col.status}
             status={col.status}
             label={col.label}
-            tickets={tickets.filter(t => t.status === col.status)}
+            tickets={visibleTickets.filter(t => t.status === col.status)}
             producers={producers}
             draggedId={draggedId}
             onDragStart={setDraggedId}
