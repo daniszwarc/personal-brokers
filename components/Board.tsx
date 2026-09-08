@@ -6,7 +6,6 @@ import Column from './Column'
 import TicketModal from './TicketModal'
 
 const COLUMNS: { status: TicketStatus; label: string }[] = [
-  { status: 'a_confirmar', label: 'A confirmar' },
   { status: 'pendiente',   label: 'Pendiente' },
   { status: 'en_proceso',  label: 'En proceso' },
   { status: 'cerrado',     label: 'Cerrado' },
