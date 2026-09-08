@@ -6,7 +6,7 @@ import { createPendingCookie } from '@/lib/auth'
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json()
 
-  if (!email || !password) {
+  if (!email) {
     return NextResponse.json({ error: 'Email y contraseña son requeridos' }, { status: 400 })
   }
 
@@ -16,8 +16,17 @@ export async function POST(req: NextRequest) {
   )
   const producer = rows[0]
 
-  if (!producer || !producer.password_hash) {
+  if (!producer) {
     return NextResponse.json({ error: 'Email o contraseña incorrectos' }, { status: 401 })
+  }
+
+  if (!producer.password_hash) {
+    await createPendingCookie({ producerId: producer.id, email: producer.email, stage: 'setup' })
+    return NextResponse.json({ redirect: '/auth/setup' })
+  }
+
+  if (!password) {
+    return NextResponse.json({ error: 'Email y contraseña son requeridos' }, { status: 400 })
   }
 
   const valid = await bcrypt.compare(password, producer.password_hash)
