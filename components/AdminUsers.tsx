@@ -17,6 +17,7 @@ export default function AdminUsers() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [resettingId, setResettingId] = useState<string | null>(null)
+  const [resetFeedback, setResetFeedback] = useState<{ id: string; type: 'success' | 'error' } | null>(null)
 
   const fetchProducers = async () => {
     const res = await fetch('/api/admin/producers')
@@ -65,9 +66,15 @@ export default function AdminUsers() {
 
   const handleReset = async (id: string) => {
     setResettingId(id)
-    await fetch(`/api/admin/producers/${id}/reset`, { method: 'PATCH' })
+    try {
+      const res = await fetch(`/api/admin/producers/${id}/reset`, { method: 'PATCH' })
+      setResetFeedback({ id, type: res.ok ? 'success' : 'error' })
+      if (res.ok) fetchProducers()
+    } catch {
+      setResetFeedback({ id, type: 'error' })
+    }
     setResettingId(null)
-    fetchProducers()
+    setTimeout(() => setResetFeedback(null), 3000)
   }
 
   return (
@@ -132,13 +139,20 @@ export default function AdminUsers() {
                   <td className="px-4 py-2 text-gray-500">{p.email}</td>
                   <td className="px-4 py-2 text-gray-500">{p.active ? 'Sí' : 'No'}</td>
                   <td className="px-4 py-2 text-right">
-                    <button
-                      onClick={() => handleReset(p.id)}
-                      disabled={resettingId === p.id}
-                      className="text-xs text-blue-600 hover:text-blue-700 disabled:opacity-50"
-                    >
-                      {resettingId === p.id ? 'Reseteando...' : 'Resetear contraseña'}
-                    </button>
+                    <span className="inline-flex items-center gap-2">
+                      {resetFeedback?.id === p.id && (
+                        <span className={resetFeedback.type === 'success' ? 'text-xs text-green-600' : 'text-xs text-red-600'}>
+                          {resetFeedback.type === 'success' ? 'Contraseña reseteada' : 'Error al resetear'}
+                        </span>
+                      )}
+                      <button
+                        onClick={() => handleReset(p.id)}
+                        disabled={resettingId === p.id}
+                        className="text-xs text-blue-600 hover:text-blue-700 disabled:opacity-50"
+                      >
+                        {resettingId === p.id ? 'Reseteando...' : 'Resetear contraseña'}
+                      </button>
+                    </span>
                   </td>
                 </tr>
               ))}

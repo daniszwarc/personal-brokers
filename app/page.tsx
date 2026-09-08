@@ -1,11 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Board from '@/components/Board'
 import NewTicketModal from '@/components/NewTicketModal'
 import { Producer } from '@/types'
 
 export default function Home() {
+  const router = useRouter()
   const [modalOpen, setModalOpen] = useState(false)
   const [producers, setProducers] = useState<Producer[]>([])
   const [boardKey, setBoardKey] = useState(0)
@@ -19,6 +21,11 @@ export default function Home() {
     setBoardKey(k => k + 1)
   }
 
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' })
+    router.push('/login')
+  }
+
   return (
     <main className="min-h-screen bg-gray-100">
       {/* Topbar */}
@@ -30,12 +37,20 @@ export default function Home() {
             <div className="text-xs text-gray-400">Gestión de tareas</div>
           </div>
         </div>
-        <button
-          onClick={() => setModalOpen(true)}
-          className="text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          + Nueva tarea
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setModalOpen(true)}
+            className="text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            + Nueva tarea
+          </button>
+          <button
+            onClick={handleLogout}
+            className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            Cerrar sesión
+          </button>
+        </div>
       </div>
 
       {/* Board */}
