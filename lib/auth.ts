@@ -95,3 +95,5 @@ export async function verifyPendingToken(token: string | undefined) {
 
 export const SESSION_COOKIE_NAME = SESSION_COOKIE
 export const PENDING_COOKIE_NAME = PENDING_COOKIE
+
+export const ADMIN_PRODUCER_ID = '615a1ca7-cf4c-4ac1-abf7-85a227eb1950'
