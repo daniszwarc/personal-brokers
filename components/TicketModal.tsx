@@ -124,7 +124,7 @@ export default function TicketModal({
               }}
               className="bg-gray-800 text-white rounded px-4 py-2 hover:bg-gray-900 text-sm transition-colors"
             >
-              Cerrar y archivar
+              Eliminar
             </button>
           </div>
         </div>
