@@ -117,12 +117,6 @@ export default function TicketModal({
           </select>
           <div className="flex gap-2">
             <button
-              onClick={() => { onStatusChange(ticket.id, 'cerrado'); onClose() }}
-              className="border border-gray-300 text-gray-700 rounded px-4 py-2 hover:bg-gray-50 text-sm transition-colors"
-            >
-              Cerrar
-            </button>
-            <button
               onClick={() => {
                 if (!confirm('¿Eliminar este ticket de forma permanente?')) return
                 onDelete(ticket.id)
@@ -130,7 +124,7 @@ export default function TicketModal({
               }}
               className="bg-gray-800 text-white rounded px-4 py-2 hover:bg-gray-900 text-sm transition-colors"
             >
-              Cerrar y eliminar
+              Cerrar y archivar
             </button>
           </div>
         </div>
