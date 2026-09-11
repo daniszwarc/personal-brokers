@@ -1,6 +1,7 @@
 'use client'
 
 import { Ticket, Producer } from '@/types'
+import { formatTiempo } from '@/lib/format'
 
 interface Props {
   ticket: Ticket
@@ -137,14 +138,15 @@ export default function TicketCard({
             </button>
           )}
         </div>
-        {ticket.productor_id ? (
-          <span className="text-xs text-gray-400">
-            {ticket.productor_nombre?.split(' ')[0]} · hace {Math.round(ticket.horas_sin_mover)} hs
-          </span>
-        ) : (
+        <div className="flex flex-col items-end gap-1">
+          {ticket.productor_id && (
+            <span className="text-xs text-gray-400">
+              {ticket.productor_nombre?.split(' ')[0]} · {formatTiempo(ticket.horas_sin_mover)}
+            </span>
+          )}
           <select
             className="text-xs border border-gray-200 rounded px-1 py-0.5 bg-white text-gray-500"
-            defaultValue=""
+            value={ticket.productor_id ?? ''}
             onClick={e => e.stopPropagation()}
             onChange={e => e.target.value && onAssign(ticket.id, e.target.value)}
           >
@@ -153,7 +155,7 @@ export default function TicketCard({
               <option key={p.id} value={p.id}>{p.name}</option>
             ))}
           </select>
-        )}
+        </div>
       </div>
     </div>
   )

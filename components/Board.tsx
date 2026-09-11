@@ -107,6 +107,13 @@ export default function Board() {
     showToast(`${ticket?.ticket_number} eliminado`)
   }
 
+  const handleDeleteClosed = async () => {
+    if (!confirm('¿Eliminar todos tus tickets cerrados?')) return
+    await fetch('/api/tickets/closed', { method: 'DELETE' })
+    showToast('Tickets cerrados eliminados')
+    fetchTickets()
+  }
+
   const handleDrop = async (targetStatus: TicketStatus) => {
     if (!draggedId) return
     const ticket = tickets.find(t => t.id === draggedId)
@@ -127,22 +134,30 @@ export default function Board() {
   return (
     <div>
       {/* Filtro */}
-      <div className="flex gap-1 mb-3 bg-white border border-gray-200 rounded-lg p-1 w-fit">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex gap-1 bg-white border border-gray-200 rounded-lg p-1 w-fit">
+          <button
+            onClick={() => setFilter('todos')}
+            className={`text-xs px-3 py-1.5 rounded-md transition-colors ${
+              filter === 'todos' ? 'bg-blue-600 text-white' : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            Todos
+          </button>
+          <button
+            onClick={() => setFilter('mios')}
+            className={`text-xs px-3 py-1.5 rounded-md transition-colors ${
+              filter === 'mios' ? 'bg-blue-600 text-white' : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            Mis tickets
+          </button>
+        </div>
         <button
-          onClick={() => setFilter('todos')}
-          className={`text-xs px-3 py-1.5 rounded-md transition-colors ${
-            filter === 'todos' ? 'bg-blue-600 text-white' : 'text-gray-500 hover:text-gray-700'
-          }`}
+          onClick={handleDeleteClosed}
+          className="text-xs text-gray-400 hover:text-red-500 transition-colors"
         >
-          Todos
-        </button>
-        <button
-          onClick={() => setFilter('mios')}
-          className={`text-xs px-3 py-1.5 rounded-md transition-colors ${
-            filter === 'mios' ? 'bg-blue-600 text-white' : 'text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          Mis tickets
+          Eliminar cerrados
         </button>
       </div>
 
