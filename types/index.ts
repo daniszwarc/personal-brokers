@@ -28,4 +28,5 @@ export interface Ticket {
 export interface Producer {
   id: string
   name: string
+  email: string
 }

@@ -2,6 +2,8 @@
 
 import { Ticket, Producer } from '@/types'
 
+const EXCLUDED_PRODUCER_EMAIL = 'dani@thiez.com'
+
 interface Props {
   ticket: Ticket
   producers: Producer[]
@@ -81,7 +83,7 @@ export default function TicketModal({
               onChange={e => e.target.value && onAssign(ticket.id, e.target.value)}
             >
               <option value="" disabled>Asignar...</option>
-              {producers.map(p => (
+              {producers.filter(p => p.email !== EXCLUDED_PRODUCER_EMAIL).map(p => (
                 <option key={p.id} value={p.id}>{p.name}</option>
               ))}
             </select>
