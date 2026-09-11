@@ -77,16 +77,20 @@ export default function TicketModal({
           </div>
           <div>
             <div className="text-xs text-gray-400">Asignado</div>
-            <select
-              className="text-xs border border-gray-200 rounded px-1 py-0.5 bg-white text-gray-500"
-              value={ticket.productor_id ?? ''}
-              onChange={e => e.target.value && onAssign(ticket.id, e.target.value)}
-            >
-              <option value="" disabled>Asignar...</option>
-              {producers.filter(p => p.email !== EXCLUDED_PRODUCER_EMAIL).map(p => (
-                <option key={p.id} value={p.id}>{p.name}</option>
-              ))}
-            </select>
+            {ticket.status === 'pendiente' || ticket.status === 'en_proceso' ? (
+              <select
+                className="text-xs border border-gray-200 rounded px-1 py-0.5 bg-white text-gray-500"
+                value={ticket.productor_id ?? ''}
+                onChange={e => e.target.value && onAssign(ticket.id, e.target.value)}
+              >
+                <option value="" disabled>Asignar...</option>
+                {producers.filter(p => p.email !== EXCLUDED_PRODUCER_EMAIL).map(p => (
+                  <option key={p.id} value={p.id}>{p.name}</option>
+                ))}
+              </select>
+            ) : (
+              <div className="text-gray-700">{ticket.productor_nombre ?? 'Sin asignar'}</div>
+            )}
           </div>
           <div>
             <div className="text-xs text-gray-400">Fecha</div>

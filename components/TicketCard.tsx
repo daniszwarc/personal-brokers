@@ -146,17 +146,19 @@ export default function TicketCard({
               {ticket.productor_nombre?.split(' ')[0]} · {formatTiempo(ticket.horas_sin_mover)}
             </span>
           )}
-          <select
-            className="text-xs border border-gray-200 rounded px-1 py-0.5 bg-white text-gray-500"
-            value={ticket.productor_id ?? ''}
-            onClick={e => e.stopPropagation()}
-            onChange={e => e.target.value && onAssign(ticket.id, e.target.value)}
-          >
-            <option value="" disabled>Asignar...</option>
-            {producers.filter(p => p.email !== EXCLUDED_PRODUCER_EMAIL).map(p => (
-              <option key={p.id} value={p.id}>{p.name}</option>
-            ))}
-          </select>
+          {(ticket.status === 'pendiente' || ticket.status === 'en_proceso') && (
+            <select
+              className="text-xs border border-gray-200 rounded px-1 py-0.5 bg-white text-gray-500"
+              value={ticket.productor_id ?? ''}
+              onClick={e => e.stopPropagation()}
+              onChange={e => e.target.value && onAssign(ticket.id, e.target.value)}
+            >
+              <option value="" disabled>Asignar...</option>
+              {producers.filter(p => p.email !== EXCLUDED_PRODUCER_EMAIL).map(p => (
+                <option key={p.id} value={p.id}>{p.name}</option>
+              ))}
+            </select>
+          )}
         </div>
       </div>
     </div>
